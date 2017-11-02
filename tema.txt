@@ -1,0 +1,66 @@
+%2) Incluziunea listelor
+ sublist(S, L) :- 
+                 append(_, L2, L), 
+                 append(S, _, L2).
+ subset([], _).
+ subset([X | Rest], L) :- 
+                         member(X, L), 
+                         subset(Rest, L).
+
+
+%4) Descompunerea unui numar N in factori primi
+ descomp(N, L) :-
+                    factp(N, L, 2).
+ factp(1, [ ], _ ).
+ factp(N, [Divizor | Lista], Divizor) :-
+                             N > 1, 0 is N mod Divizor, N1 is N // Divizor, 
+                             factp(N1, Lista, Divizor).
+ factp(N,Lista,Divizor) :-
+                         N > 1, not(0 is N mod Divizor), D1 is Divizor + 1, 
+                         factp(N, Lista, D1).
+
+%9) predicatul substitutie(X,Y,L1,L2) 
+ substitutie(_,_,[],[]).
+ substitutie(X,Y,[X|L1],[Y|L2]):- 
+                                 substitutie(X,Y,L1,L2).
+ substitutie(X,Y,[H|L1],[H|L2]):- 
+                                 X\=H, 
+                                 not(H=[_|_]), 
+                                 substitutie(X,Y,L1,L2).
+ substitutie(X,Y,[H|L1],[H2|L2]):-
+                                  X\=H,
+                                  H=[_|_], 
+                                  substitutie(X,Y,H,H2),
+                                  substitutie(X,Y,L1,L2).
+
+%12) predicatul parimpar(L1,L2,L3)
+ parimpar([X], [], [X]).
+ parimpar([X, Y],[Y], [X]). 
+ parimpar([X, Y|L1], [Y|L2], [X|L3]) :-
+                                      parimpar(L1, L2, L3).
+
+
+%11) membrul membrupar(Elem,Lista)
+ membrupar(_,[]).
+ membrupar(_,[_]).
+ membrupar(Elem, [_, Elem|Lista]):- 
+                         membrupar(Elem,Lista).
+ membrupar(Elem, [_, _|Lista]):- 
+                         membrupar(Elem,Lista).
+
+%1) Eliminarea unui element dintr-o lista
+ sterg([], _, []).
+ sterg([X|Y], X, L) :- 
+                       sterg(Y, X, L). 
+ sterg([Z|Y], X, [Z|L]) :- 
+                           sterg(Y, X, L).
+
+
+
+sublist([c, d, e], [a, b, c, d, e, f]) .
+sublist([b, c, e], [a, b, c, d, e, f]).
+descomp(12,[2,2,3]).
+substitutie(a,x,[a,[b,a],c],L2).
+parimpar([a,b,c,d,e],L2,L3).
+sterg([1, 4, 6, 8, 6, 12, 6], 6, L).
+membrupar(X,[1,3,5,4]).
